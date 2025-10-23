@@ -1,10 +1,11 @@
 {
-  "name": "clinical-voice-assistant",
+  "name": "ecw-voice-mapping",
   "version": "1.0.0",
-  "description": "Clinical Voice Assistant with OAuth, AI transcription, and deployment setup",
-  "private": true,
   "scripts": {
-    "build": "cd mini-frontend && npm install && npx vite build",
+    "build": "cd mini-frontend && npm install && npm run build",
     "dev": "cd mini-frontend && npm run dev"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
