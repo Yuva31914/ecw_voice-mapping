@@ -1,0 +1,15 @@
+{
+  "buildCommand": "cd mini-frontend && npm install && npm run build",
+  "outputDirectory": "mini-frontend/dist",
+  "framework": "vite",
+  "installCommand": "cd mini-frontend && npm install",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "env": {
+    "VITE_API_BASE_URL": "https://869d1ba013f2.ngrok-free.app"
+  }
+}
