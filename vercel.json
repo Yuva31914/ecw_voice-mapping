@@ -1,12 +1,17 @@
 {
-  "buildCommand": "cd mini-frontend && npm install && npm run build",
-  "outputDirectory": "mini-frontend/dist",
-  "framework": "vite",
-  "installCommand": "cd mini-frontend && npm install",
-  "rewrites": [
+  "builds": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "src": "mini-frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ],
   "env": {

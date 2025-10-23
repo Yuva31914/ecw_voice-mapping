@@ -2,13 +2,5 @@
   "name": "clinical-voice-assistant",
   "version": "1.0.0",
   "description": "Clinical Voice Assistant with OAuth, AI transcription, and deployment setup",
-  "private": true,
-  "scripts": {
-    "build": "cd mini-frontend && npm run build",
-    "dev": "cd mini-frontend && npm run dev",
-    "install": "cd mini-frontend && npm install"
-  },
-  "workspaces": [
-    "mini-frontend"
-  ]
+  "private": true
 }
