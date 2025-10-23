@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "cd mini-frontend && npm install && npx vite build",
   "outputDirectory": "mini-frontend/dist",
   "framework": "vite",
   "rewrites": [
