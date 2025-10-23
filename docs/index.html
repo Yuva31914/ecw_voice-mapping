@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinical Voice Assistant - OAuth Redirect</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 600px;
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .error {
+            background: #fff;
+            color: #c62828;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        .success {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .button {
+            background: white;
+            color: #667eea;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .button:hover {
+            background: #f5f5f5;
+        }
+        .code-display {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            word-break: break-all;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="loading">
+            <div class="spinner"></div>
+            <h2>Processing OAuth Authorization...</h2>
+            <p>Redirecting to Clinical Voice Assistant</p>
+        </div>
+        
+        <div id="error" style="display: none;"></div>
+        <div id="success" style="display: none;"></div>
+    </div>
+
+    <script>
+    (function () {
+        const qp = new URLSearchParams(window.location.search);
+        const code = qp.get('code');
+        const state = qp.get('state');
+        
+        console.log('OAuth callback received:', { code: code ? code.substring(0, 20) + '...' : null, state });
+        
+        if (code && state) {
+            // Show success message with details
+            document.getElementById('loading').style.display = 'none';
+            const successDiv = document.getElementById('success');
+            successDiv.style.display = 'block';
+            successDiv.innerHTML = `
+                <div class="success">
+                    <h3>✅ Authorization Complete!</h3>
+                    <p>The authorization code has been captured. Click the button below to continue to your local application.</p>
+                    
+                    <p><strong>Authorization Code:</strong></p>
+                    <div class="code-display">${code.substring(0, 50)}...</div>
+                    
+                    <p><strong>State:</strong></p>
+                    <div class="code-display">${state}</div>
+                    
+                    <a href="https://869d1ba013f2.ngrok-free.app/callback?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}" 
+                       class="button" id="redirect-btn">
+                        Connect to Local App
+                    </a>
+                    
+                    <p style="margin-top: 1rem; font-size: 14px; opacity: 0.8;">
+                        If the button doesn't work, copy this URL:<br>
+                        <span style="font-family: monospace; font-size: 12px; word-break: break-all;">
+                            https://869d1ba013f2.ngrok-free.app/callback?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}
+                        </span>
+                    </p>
+                </div>
+            `;
+            
+            // Auto-redirect after 3 seconds
+            setTimeout(() => {
+                const target = `https://869d1ba013f2.ngrok-free.app/callback?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`;
+                console.log('Auto-redirecting to:', target);
+                window.location.replace(target);
+            }, 3000);
+            
+            // Add click handler for manual redirect
+            setTimeout(() => {
+                const btn = document.getElementById('redirect-btn');
+                if (btn) {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const target = `https://869d1ba013f2.ngrok-free.app/callback?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`;
+                        console.log('Manual redirect to:', target);
+                        window.location.replace(target);
+                    });
+                }
+            }, 100);
+            
+        } else {
+            // Show error
+            document.getElementById('loading').style.display = 'none';
+            const errorDiv = document.getElementById('error');
+            errorDiv.style.display = 'block';
+            errorDiv.innerHTML = `
+                <div class="error">
+                    <h3>❌ OAuth Error</h3>
+                    <p><strong>Error:</strong> No authorization code found.</p>
+                    <p>Please start from the app's "Login with eCW" button.</p>
+                    <a href="http://localhost:3000" class="button">Go to Application</a>
+                </div>
+            `;
+        }
+    })();
+    </script>
+</body>
+</html>
+

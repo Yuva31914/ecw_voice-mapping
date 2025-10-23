@@ -1,0 +1,20 @@
+# Environment variables (contains secrets!)
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+
+# Testing
+*.wav
+*.mp3
+*.webm
+*.m4a
+test_*.json
+
